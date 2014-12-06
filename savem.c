@@ -29,7 +29,7 @@ static GOptionEntry entries[] =
 
 void spew_file_complex_array (char * filename, complex double * arr, int size1, int size2) {
     int m,n;
-	FILE * f = fopen(filename, "w");
+    FILE * f = fopen(filename, "w");
     for (m=0;m<size1;m++) {
         for (n=0;n<size2;n++) {
             fprintf(f, "%1.5e %1.5e ",creal(arr[m+size1*n]),cimag(arr[m+size1*n]));
@@ -37,7 +37,7 @@ void spew_file_complex_array (char * filename, complex double * arr, int size1, 
         fprintf(f, "\n");
     }
     fprintf(f,"\n");
-	fclose(f);
+    fclose(f);
 }
 
 int main (int argc, char *argv[]) {
@@ -61,10 +61,9 @@ int main (int argc, char *argv[]) {
     if(dir==NULL)
       dir=g_strdup("0_0_1");
     
-	ThreeVector *kdir = dir_from_string (dir);
+    ThreeVector *kdir = dir_from_string (dir);
     
     GList * list = calc_w_phi_coeffs (kperp, kdir);  // calculate list of V at kperp as a function of kpar
-    int NB = model->total_bands;
     
     Bundle * bundle = find_bundle (b);
     const size_t NSB = bundle->list->len;

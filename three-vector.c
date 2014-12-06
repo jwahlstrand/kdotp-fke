@@ -136,7 +136,7 @@ ThreeVector * three_vector_from_string (char * text)
     return tv;
 }
 
-ThreeVector * three_vector_from_string_array (const char ** toks)
+ThreeVector * three_vector_from_string_array (char ** toks)
 {
    ThreeVector *tv = g_slice_new0(ThreeVector);
    if (toks) {

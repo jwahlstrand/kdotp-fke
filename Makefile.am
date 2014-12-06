@@ -22,7 +22,11 @@ savem_SOURCES = savem.c
 savem_LDADD = libkdotp.la $(GLIB_LIBS) $(GSL_LIBS) $(FFTW_LIBS)
 savem_LDFLAGS = -static  -lm -lc -lgcc -lgcc_eh
 
-bin_PROGRAMS = savebands saveV savem
+onephoton_SOURCES = onephoton.c
+onephoton_LDADD = libkdotp.la $(GLIB_LIBS) $(GSL_LIBS) $(FFTW_LIBS)
+onephoton_LDFLAGS = -static  -lm -lc -lgcc -lgcc_eh
+
+bin_PROGRAMS = savebands saveV savem onephoton
 
 libkdotp_la_SOURCES = \
     three-vector.c \
@@ -38,7 +42,10 @@ libkdotp_la_SOURCES = \
     zener.c \
     pert-ode.c \
     coeffs-pert.c \
-    coeffs-pert-other.c
+    coeffs-pert-other.c \
+    box.c \
+    absorption.c \
+    integration.c
     
 EXTRA_DIST = px8.txt \
              py8.txt \

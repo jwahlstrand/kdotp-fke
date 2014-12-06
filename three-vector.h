@@ -22,7 +22,7 @@ ThreeVector * three_vector_from_string (char * text);
 double three_vector_length (const ThreeVector *tv);
 ThreeVector * dir_from_string (char * string);
 ThreeVector * three_vector_unit (const ThreeVector *tv);
-ThreeVector * three_vector_from_string_array (const char ** toks);
+ThreeVector * three_vector_from_string_array (char ** toks);
 
 ThreeVector * three_vector_e (const ThreeVector *g);
 ThreeVector * three_vector_f (const ThreeVector *g, const ThreeVector *e );

@@ -27,7 +27,7 @@ GList * calc_w_phi_coeffs (const ThreeVector * kperp, const ThreeVector * normal
 void set_initial_condition2 (double * wall, gsl_matrix_complex * pxproj, gsl_matrix_complex * pyproj, gsl_matrix_complex * pzproj, complex double * rxzproj, complex double * ryzproj, complex double * rzzproj);
 
 /* in coeffs_pert_other.c */
-GList * calc_w_phi_constP (ThreeVector * kperp);
+GList * calc_w_phi_constP (const ThreeVector * kperp);
 GList * calc_w_phi_KKP (ThreeVector * kperp, ThreeVector * dir);
 
 double coeffs_pert_get_elapsed_time();

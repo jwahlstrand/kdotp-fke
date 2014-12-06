@@ -16,7 +16,7 @@ extern Model * model;
 /* matrix elements are constant */
 /* only works for g=z */
 
-GList * calc_w_phi_constP (ThreeVector * kperp) {
+GList * calc_w_phi_constP (const ThreeVector * kperp) {
     GList * pointlist = NULL;
     
     ThreeVector * kval = three_vector_copy (kperp);

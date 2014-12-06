@@ -45,6 +45,7 @@ typedef struct {
 
 #define C(m,n) cc[(m)*NB+(n)]
 
+#if DEBUG
 static
 void spew_complex_array (complex double * arr, size_t size1, size_t size2) {
     size_t m,n;
@@ -57,7 +58,6 @@ void spew_complex_array (complex double * arr, size_t size1, size_t size2) {
     printf("\n");
 }
 
-#if DEBUG
 static
 void spew_matrix_complex (gsl_matrix_complex * mat) {
     size_t m,n;
@@ -153,7 +153,7 @@ static void cp_init() {
  * returning a list of matrix elements as a function of kc */
 
 /* confusing but simplifies things:  kperp is in efg basis, direction in xyz basis */
-/* g is the direction of the field.  See three-vector.cpp for functions that define e and f */
+/* g is the direction of the field.  See three-vector.c for functions that define e and f */
 
 GList * calc_w_phi_coeffs (const ThreeVector * kperp, const ThreeVector * direction) {
     if(!cptimer) {  /* optimization timer */
@@ -173,7 +173,6 @@ GList * calc_w_phi_coeffs (const ThreeVector * kperp, const ThreeVector * direct
     
     double te, he, kc;
     
-    int status;
     size_t qq;
     
 	gboolean failed = FALSE;
@@ -261,19 +260,19 @@ GList * calc_w_phi_coeffs (const ThreeVector * kperp, const ThreeVector * direct
     double dkc=5e-5;
     
 	for (kc=dkc*COARSENESS;kc<=KCMAX;kc=kc+dkc*COARSENESS) {  // coarse loop for ODE solver for W - positive kc
-	    while (te < kc && !failed) {
-	        status = pert_ode_evolve (po, &te, kc, &he, call);
-            ThreeVector *kpar = three_vector_copy(direction);
-            three_vector_scale(kpar,te);
-            ThreeVector *kval = three_vector_add(kperp2,kpar);
-            pointlist = g_list_prepend (pointlist, matrix_element_create_from_coeffs(kval, callc, te));
-            
-            if (qq>100000) {  /* danger with adaptive solver is it might get stuck */
-	        	failed=TRUE;  /* this detects whether the number of points is getting too high */
-	    	    g_warning("calc_w_phi_coeffs:  ode solver ran away, positive direction");
-	    	}
-	    	qq++;
-	    }
+	  while (te < kc && !failed) {
+	    pert_ode_evolve (po, &te, kc, &he, call);
+      ThreeVector *kpar = three_vector_copy(direction);
+      three_vector_scale(kpar,te);
+      ThreeVector *kval = three_vector_add(kperp2,kpar);
+      pointlist = g_list_prepend (pointlist, matrix_element_create_from_coeffs(kval, callc, te));
+      
+      if (qq>100000) {  /* danger with adaptive solver is it might get stuck */
+        failed=TRUE;  /* this detects whether the number of points is getting too high */
+        g_warning("calc_w_phi_coeffs:  ode solver ran away, positive direction");
+      }
+      qq++;
+	  }
 	}
 	
 	pointlist = g_list_reverse (pointlist); // reverse list
@@ -294,7 +293,7 @@ GList * calc_w_phi_coeffs (const ThreeVector * kperp, const ThreeVector * direct
     
     for (kc=dkc*COARSENESS;kc<=KCMAX;kc=kc+dkc*COARSENESS) {
 	    while (te < kc && !failed) {
-    	 	status = pert_ode_evolve (po, &te, kc, &he, call);
+    	 	pert_ode_evolve (po, &te, kc, &he, call);
     	 	ThreeVector *kpar = three_vector_copy(direction);
             three_vector_scale(kpar,-te);
             ThreeVector *kval = three_vector_add(kperp2,kpar);

@@ -23,18 +23,18 @@ static GOptionEntry entries[] =
 };
 
 void spew_file_double_array (char * filename, double * arr, int size1) {
-    int m,n;
-	FILE * f = fopen(filename, "w");
+    int m;
+    FILE * f = fopen(filename, "w");
     for (m=0;m<size1;m++) {
         fprintf(f, "%1.5e\n",arr[m]);
     }
     fprintf(f,"\n");
-	fclose(f);
+    fclose(f);
 }
 
 void spew_file_complex_array (char * filename, complex double * arr, int size1, int size2) {
     int m,n;
-	FILE * f = fopen(filename, "w");
+    FILE * f = fopen(filename, "w");
     for (m=0;m<size1;m++) {
         for (n=0;n<size2;n++) {
             fprintf(f, "%1.5e %1.5e ",creal(arr[m+size1*n]),cimag(arr[m+size1*n]));
@@ -42,7 +42,7 @@ void spew_file_complex_array (char * filename, complex double * arr, int size1, 
         fprintf(f, "\n");
     }
     fprintf(f,"\n");
-	fclose(f);
+    fclose(f);
 }
 
 int main (int argc, char *argv[]) {
