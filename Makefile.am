@@ -18,7 +18,11 @@ saveV_SOURCES = saveV.c
 saveV_LDADD = libkdotp.la $(GLIB_LIBS) $(GSL_LIBS) $(FFTW_LIBS)
 saveV_LDFLAGS = -static  -lm -lc -lgcc -lgcc_eh
 
-bin_PROGRAMS = savebands saveV
+savem_SOURCES = savem.c
+savem_LDADD = libkdotp.la $(GLIB_LIBS) $(GSL_LIBS) $(FFTW_LIBS)
+savem_LDFLAGS = -static  -lm -lc -lgcc -lgcc_eh
+
+bin_PROGRAMS = savebands saveV savem
 
 libkdotp_la_SOURCES = \
     three-vector.c \

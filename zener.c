@@ -17,8 +17,6 @@
 /* most notation is consistent with John's ip.pdf */
 /* which discusses the interaction picture and also the "other picture" */
 
-/* these three switches control how the equation is solved */
-
 extern Model * model;
 extern Material * material;
 
