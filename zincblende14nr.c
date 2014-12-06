@@ -6,6 +6,48 @@
 #define getmat(mat,i,j) mat[(i)+(j)*14]
 
 extern Material * material;
+extern Model * model;
+
+complex double * Px14 ()
+{   
+	double P0 = material->P0;
+	double Q = material->Q;
+	double P0p = material->P0p;
+
+    complex double * px = complex_double_array_calloc (14*14);
+    
+    #include "px14.txt"
+
+    return px;
+}
+
+complex double * Py14 ()
+{    
+	double P0 = material->P0;
+	double Q = material->Q;
+	double P0p = material->P0p;
+
+    complex double * py = complex_double_array_calloc (14*14);
+    
+    #include "py14.txt"
+    
+    complex_array_transpose(py,14);
+    
+    return py;
+}
+    
+complex double * Pz14 ()
+{   
+	double P0 = material->P0;
+	double Q = material->Q;
+	double P0p = material->P0p;
+
+    complex double * pz = complex_double_array_calloc (14*14);
+    
+    #include "pz14.txt"
+    
+    return pz;
+}
 
 static
 complex double * H14nr (const ThreeVector * k)
@@ -69,9 +111,7 @@ complex double * H14nr (const ThreeVector * k)
 }
 
 static
-complex double * d2Hdall2_14 (){
-    complex double * h = complex_double_array_calloc (196);
-    
+void d2Hdall2_14i (complex double *h){    
     complex double a = 2*R;
     setmat (h, 0, 0, a);
     setmat (h, 1, 1, a);
@@ -95,6 +135,13 @@ complex double * d2Hdall2_14 (){
     a=2*R;
     setmat(h, 6, 6, a);
     setmat(h, 13, 13, a);
+}
+
+static
+complex double * d2Hdall2_14 (){
+    complex double * h = complex_double_array_calloc (196);
+    
+    d2Hdall2_14i(h);
     
     return h;
 }
@@ -107,63 +154,42 @@ complex double * zero_14 (){
 }
 
 static
-complex double * dHdx14 (const ThreeVector * k)
+void dHdx14 (complex double * h, const ThreeVector * k)
 {
-    complex double * h = complex_double_array_calloc (196);
-    
-    double one = 1;
-    
-    complex double * px = Px14();
-    scale_then_add_complex_double_arrays (h, px, &one, 196);
-    fftw_free(px);
-    
+    complex_array_zero(h,196);
+    add_complex_double_arrays (h, model->Px, 196);
+        
     double kx = k->x[0];
 	
-	px = d2Hdall2_14();
+    complex double *px = model->buffer1;
+    d2Hdall2_14i(px);
     scale_then_add_complex_double_arrays (h, px, &kx, 196);
-    fftw_free(px);
-    
-    return h;
 }
 
 static
-complex double * dHdy14 (const ThreeVector * k)
+void dHdy14 (complex double * h, const ThreeVector * k)
 {
-    complex double * h = complex_double_array_calloc (196);
-    
-    double one = 1;
-    
-    complex double * py = Py14();
-    scale_then_add_complex_double_arrays (h, py, &one, 196);
-    fftw_free(py);
-    
-	double ky = k->x[1];
+    complex_array_zero(h,196);
+    add_complex_double_arrays (h, model->Py, 196);
+        
+    double ky = k->x[1];
 	
-    py = d2Hdall2_14();
+    complex double *py = model->buffer1;
+    d2Hdall2_14i(py);
     scale_then_add_complex_double_arrays (h, py, &ky, 196);
-    fftw_free(py);
-    
-    return h;
 }
 
 static
-complex double * dHdz14 (const ThreeVector * k)
+void dHdz14 (complex double * h, const ThreeVector * k)
 {
-    complex double * h = complex_double_array_calloc (196);
+    complex_array_zero(h,196);
+    add_complex_double_arrays (h, model->Pz, 196);
     
-    double one = 1;
-    
-    complex double * pz = Pz14();
-    scale_then_add_complex_double_arrays (h, pz, &one, 196);
-    fftw_free(pz);
-    
-	double kz = k->x[2];
+    double kz = k->x[2];
 	
-    pz = d2Hdall2_14();
+    complex double *pz = model->buffer1;
+    d2Hdall2_14i(pz);
     scale_then_add_complex_double_arrays (h, pz, &kz, 196);
-    fftw_free(pz);
-    
-    return h;
 }
 
 Model * zincblende14nr_new ()

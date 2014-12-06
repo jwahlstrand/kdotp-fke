@@ -209,7 +209,7 @@ GammaHat ** calculate_gammahats (GList * matrix_elements, double epsilon, ThreeV
         }
         
         size_t m,n,s,p,sp,pp;
-        MatrixElement * me;
+        MatrixElement * me = NULL;
         double kc;
         const double dkc=2*KCMAX/Nkc;
         
@@ -230,6 +230,7 @@ GammaHat ** calculate_gammahats (GList * matrix_elements, double epsilon, ThreeV
             
             iter = g_list_next (iter);
         }
+        if(me==NULL) return NULL;
         
         iter = g_list_previous (iter);
         GList * zeroelement = iter;
@@ -276,8 +277,6 @@ GammaHat ** calculate_gammahats (GList * matrix_elements, double epsilon, ThreeV
                 /* collect the elements we'll use into a more compact matrix here? */
                 
                 q=0;
-                
-                MatrixElement * meintrp = NULL;
                 
                 for (kc=0;kc<KCMAX;kc=kc+dkc) {  // calculate Gamma using L
                     if (kc>next->kc) {  // if we have gone beyond the next matrix element's kc, shift over until this is no longer true
@@ -333,8 +332,6 @@ GammaHat ** calculate_gammahats (GList * matrix_elements, double epsilon, ThreeV
             	
             	GList * niter = g_list_previous(iter);
             	next = (MatrixElement *) niter->data;
-            	
-            	meintrp=NULL;
                 
                 for (kc=-dkc;kc>-KCMAX;kc=kc-dkc) {
                     while (kc<me->kc) {
@@ -412,7 +409,7 @@ GammaHat ** calculate_gammahats (GList * matrix_elements, double epsilon, ThreeV
 	    }
 	}
 		
-	GammaSpline * gs;
+	GammaSpline * gs = NULL;
 	if (model->total_bands==2 ) {
     	gs = gamma_spline_new (g_list_length(matrix_elements));
 	}

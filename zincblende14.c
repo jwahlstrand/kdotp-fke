@@ -425,10 +425,10 @@ void dHdx14 (complex double * h, const ThreeVector * k)
     double Ck = material->Ck;
     
     double kx = k->x[0];
-	double ky = k->x[1];
-	double kz = k->x[2];
+    double ky = k->x[1];
+    double kz = k->x[2];
 	
-	setmat(h, 4, 11, -M_SQRT3*Ck/2.0);
+    setmat(h, 4, 11, -M_SQRT3*Ck/2.0);
     setmat(h, 4, 12, -Ck/2);
     
     setmat(h, 5, 11, Ck/2);
@@ -441,7 +441,7 @@ void dHdx14 (complex double * h, const ThreeVector * k)
     setmat(h, 12, 5, conj(getmat(h, 5, 12)));
 	
     complex double *px = model->buffer1;
-	d2Hdx2_14i(px);
+    d2Hdx2_14i(px);
     scale_then_add_complex_double_arrays (h, px, &kx, 196);
     
     d2Hdxdy_14i(px);

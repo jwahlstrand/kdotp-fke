@@ -15,7 +15,7 @@ extern Model * model = NULL;
 
 static GOptionEntry kdotp_entries[] = 
 {
-  { "model", 'm', 0, G_OPTION_ARG_STRING, &modelname, "Band structure model to use (default is zincblende14) - options are zincblende2pba, zincblende14ns, zincblende14nr, and zincblende14", NULL },
+  { "model", 'm', 0, G_OPTION_ARG_STRING, &modelname, "Band structure model to use (default is zincblende14) - options are zincblende2pba, zincblende14nr, and zincblende14", NULL },
   { "semiconductor", 's', 0, G_OPTION_ARG_STRING, &materialname, "Semiconductor to model (default is GaAs) - options are GaAs, GaSb, InP, InSb, and ZnSe", NULL },
   { NULL }
 };
@@ -344,8 +344,6 @@ Model * model_new_by_name (gchar * name) {
     g_assert (name);
     if (!strcmp(name,"zincblende2pba"))
         return zincblende2pba_new ();
-    if (!strcmp(name,"zincblende14ns"))
-        return zincblende14ns_new ();
     if (!strcmp(name,"zincblende14nr"))
         return zincblende14nr_new ();
     if (!strcmp(name,"zincblende14"))

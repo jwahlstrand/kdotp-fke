@@ -141,7 +141,7 @@ int dUdtfunc_interaction (const double kc, const double c[], double f[], void *p
 }
 
 /* see if we are at a point of degeneracy by examining the band energies */
-
+/*
 static gboolean degenerate_point (MatrixElement * me) {
     size_t mpp,npp;
     const double danger = 5e-6;
@@ -156,6 +156,7 @@ static gboolean degenerate_point (MatrixElement * me) {
     }
     return FALSE;
 }
+*/
 
 /* take the matrix elements and calculate the renormalized Gamma for a given field strength */
 /* returns a array containing L subblocks, one for each kc */
@@ -313,7 +314,7 @@ complex double * zener_renormalize_bundle (GList * list, double epsilon, ThreeVe
 	syse.params = (void *) &params;
 	
 	double he, te;
-	int failed, status;
+	int failed;
 	failed=FALSE;
 	he=5e-8;
     te=0;
@@ -353,7 +354,7 @@ complex double * zener_renormalize_bundle (GList * list, double epsilon, ThreeVe
         if (kc>0)
         for (kcp=kc-dkc;kcp<=kc;kcp=kcp+dkc/SUBDIV) {  // fine loop - not used if SUBDIV == 1
             while (te < kcp && !failed) {
-                status = gsl_odeiv_evolve_apply (ee, ce, se, &syse, &te, kcp, &he, rU);  /* take a step */
+                gsl_odeiv_evolve_apply (ee, ce, se, &syse, &te, kcp, &he, rU);  /* take a step */
             }
         }
         
@@ -398,7 +399,7 @@ complex double * zener_renormalize_bundle (GList * list, double epsilon, ThreeVe
     for (kc=-dkc;kc>-KCMAX;kc=kc-dkc) {
         for (kcp=kc+dkc;kcp>=kc;kcp=kcp-dkc/SUBDIV) {
             while (te > kcp && !failed) {
-                status = gsl_odeiv_evolve_apply (ee, ce, se, &syse, &te, kcp, &he, rU);
+                gsl_odeiv_evolve_apply (ee, ce, se, &syse, &te, kcp, &he, rU);
             }
         }
                 

@@ -34,7 +34,6 @@ libkdotp_la_SOURCES = \
     zincblende2pba.c \
     zincblende14.c \
     zincblende14nr.c \
-    zincblende14ns.c \
     diagonalize.c \
     calc-gamma.c \
     gamma-spline.c \

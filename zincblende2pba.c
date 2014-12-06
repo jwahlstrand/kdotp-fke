@@ -1,6 +1,7 @@
 #include "zincblende.h"
 
 extern Material * material;
+extern Model * model;
 
 static
 complex double * Px2 ()
@@ -67,52 +68,37 @@ complex double * H2pba (const ThreeVector * k)
     return h;
 }
 
-complex double * dHdx2pba (const ThreeVector * k)
+void dHdx2pba (complex double *h, const ThreeVector * k)
 {
-    complex double * dh = complex_double_array_calloc (2*2);
+    complex_array_zero(h,4);
+    add_complex_double_arrays (h, model->Px, 4);
     
     double kx = k->x[0];
     
-    complex double * px = Px2();
-    add_complex_double_arrays (dh, px, 2*2);
-    fftw_free(px);
-    
-    dh[0]=-2*R*kx/0.45;
-    dh[3]=2*R*kx/0.08;
-    
-    return dh;
+    h[0]=-2*R*kx/0.45;
+    h[3]=2*R*kx/0.08;
 }
 
-complex double * dHdy2pba (const ThreeVector * k)
+void dHdy2pba (complex double *h, const ThreeVector * k)
 {
-    complex double * dh = complex_double_array_calloc (2*2);
+    complex_array_zero(h,4);
+    add_complex_double_arrays (h, model->Py, 4);
     
-	double ky = k->x[1];
+    double ky = k->x[1];
     
-    complex double * py = Py2();
-    add_complex_double_arrays (dh, py, 2*2);
-    fftw_free(py);
-    
-    dh[0]=-2*R*ky/0.45;
-    dh[3]=2*R*ky/0.08;
-    
-    return dh;
+    h[0]=-2*R*ky/0.45;
+    h[3]=2*R*ky/0.08;
 }
 
-complex double * dHdz2pba (const ThreeVector * k)
+void dHdz2pba (complex double *h, const ThreeVector * k)
 {
-    complex double * dh = complex_double_array_calloc (2*2);
+    complex_array_zero(h,4);
+    add_complex_double_arrays (h, model->Pz, 4);
     
-	double kz = k->x[2];
+    double kz = k->x[0];
     
-    complex double * pz = Pz2();
-    add_complex_double_arrays (dh, pz, 2*2);
-    fftw_free(pz);
-    
-    dh[0]=-2*R*kz/0.45;
-    dh[3]=2*R*kz/0.08;
-    
-    return dh;
+    h[0]=-2*R*kz/0.45;
+    h[3]=2*R*kz/0.08;
 }
 
 Model * zincblende2pba_new ()
