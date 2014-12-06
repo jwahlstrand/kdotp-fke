@@ -15,8 +15,8 @@ extern Model * model = NULL;
 
 static GOptionEntry kdotp_entries[] = 
 {
-  { "model", 'm', 0, G_OPTION_ARG_STRING, &modelname, "Band structure model to use (default is zincblende14)", NULL },
-  { "semiconductor", 's', 0, G_OPTION_ARG_STRING, &materialname, "Semiconductor to model (default is GaAs)", NULL },
+  { "model", 'm', 0, G_OPTION_ARG_STRING, &modelname, "Band structure model to use (default is zincblende14) - options are zincblende2pba, zincblende14ns, zincblende14nr, and zincblende14", NULL },
+  { "semiconductor", 's', 0, G_OPTION_ARG_STRING, &materialname, "Semiconductor to model (default is GaAs) - options are GaAs, GaSb, InP, InSb, and ZnSe", NULL },
   { NULL }
 };
 
@@ -205,7 +205,7 @@ void matrix_transform3 (complex double * Bx, complex double * By, complex double
 }
 
 void k_dot_p_init () {
-	// set material, model from materialname, modelname
+	/* set material, model from materialname, modelname */
 	
 	material = material_new_by_name (materialname);
     model = model_new_by_name (modelname);
@@ -283,7 +283,6 @@ Material * material_new_by_name (gchar * name) {
         ZnSe->F = 0.0;
         ZnSe->db = -0.238;
         ZnSe->Ck = -0.014;
-        // don't know 30 band parameters?
         return ZnSe;
     }
     if(!strcmp(name,"InP")) {
@@ -301,7 +300,6 @@ Material * material_new_by_name (gchar * name) {
         InP->F = 0.0;
         InP->db = 0.22;
         InP->Ck = -0.014;
-        // don't know 30 band parameters?
         return InP;
     }
     if(!strcmp(name,"GaSb")) {
@@ -319,7 +317,6 @@ Material * material_new_by_name (gchar * name) {
         GaSb->F = 0.0;
         GaSb->db = -0.28;
         GaSb->Ck = 0.00043;
-        // don't know 30 band parameters?
         return GaSb;
     }
     if(!strcmp(name,"InSb")) {
@@ -337,7 +334,6 @@ Material * material_new_by_name (gchar * name) {
         InSb->F = 0.0;
         InSb->db = -0.244;
         InSb->Ck = -0.0092;
-        // don't know 30 band parameters?
         return InSb;
     }
     g_assert_not_reached();
@@ -354,8 +350,6 @@ Model * model_new_by_name (gchar * name) {
         return zincblende14nr_new ();
     if (!strcmp(name,"zincblende14"))
         return zincblende14_new ();
-    /*if (!strcmp(name,"zincblende30"))
-        return zincblende30_new();*/
     g_assert_not_reached();
     return NULL;
 }
